@@ -2,9 +2,23 @@ var express = require("express");
 var router = express.Router();
 var db = require("../models/index");
 
-/* GET users listing. */
 router.get("/", function(req, res, next) {
   res.send("respond with a resource");
+});
+
+router.post("/register", function(req, res) {
+  req.checkBody("username", "Username is required").notEmpty();
+  req.checkBody("password", "Password is required").notEmpty();
+
+  var errors = req.validationErrors();
+  if (errors) {
+    req.session.errors = errors;
+    req.session.success = false;
+    res.status(422).json({ errors: errors });
+  } else {
+    req.session.success = true;
+    res.redirect("/");
+  }
 });
 
 router.get("/lookup", function(req, res, next) {
