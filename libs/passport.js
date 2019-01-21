@@ -9,13 +9,12 @@ passport.use(
         if (!user) {
           return done(null, false, { message: "Incorrect username." });
         }
-        // if (user.password != password) {
-        //   return done(null, false, { message: "Incorrect password." });
-        // }
+        else if (user.password != password) {
+          return done(null, false, { message: "Incorrect password." });
+        }
         done(null, user);
       })
       .catch(function(err) {
-        console.log("HERE");
         done(err);
       });
   })
