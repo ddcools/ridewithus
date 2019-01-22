@@ -5,11 +5,11 @@ var bcrypt = require("bcrypt");
 
 router.get("/", function(req, res, next) {
   if (req.user) {
-    console.log(req.user);
+    res.send("For listing all users");
   } else {
-    console.log("user not yet logger in");
+    res.status(401).json({ error: 'Unauthorized!!!' });
   }
-  res.send("respond with a resource");
+  
 });
 
 router.post("/register", function(req, res) {
@@ -26,7 +26,7 @@ router.post("/register", function(req, res) {
   } else {
     req.session.success = true;
     var salt = bcrypt.genSaltSync(10);
-    var encryptedPassword = bcrypt.hashSync(req.body.email, salt);
+    var encryptedPassword = bcrypt.hashSync(req.body.password, salt);
     db.User.create({
       firstName: req.body.firstname,
       lastName: req.body.lastname,
