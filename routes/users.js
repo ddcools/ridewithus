@@ -2,14 +2,14 @@ var express = require("express");
 var router = express.Router();
 var db = require("../models/index");
 var bcrypt = require("bcrypt");
+var usersValidator = require("../libs/validators/user");
 
 router.get("/", function(req, res, next) {
   if (req.user) {
     res.send("For listing all users");
   } else {
-    res.status(401).json({ error: 'Unauthorized!!!' });
+    res.status(401).json({ error: "Unauthorized!!!" });
   }
-  
 });
 
 router.post("/register", function(req, res) {
@@ -27,18 +27,22 @@ router.post("/register", function(req, res) {
     req.session.success = true;
     var salt = bcrypt.genSaltSync(10);
     var encryptedPassword = bcrypt.hashSync(req.body.password, salt);
-    db.User.create({
-      firstName: req.body.firstname,
-      lastName: req.body.lastname,
-      email: req.body.email,
-      password: encryptedPassword
-    })
-      .then(function(user) {
-        res.json({ user: user });
+    var validationResult = usersValidator.validateUserDetails(req.body);
+
+    if (validationResult.error === null) {
+      db.User.create({
+        firstName: req.body.firstname,
+        lastName: req.body.lastname,
+        email: req.body.email,
+        password: encryptedPassword
       })
-      .catch(function(error) {
-        res.status(500).json({ error: error });
-      });
+        .then(function(user) {
+          res.json({ user: user });
+        })
+        .catch(function(error) {
+          res.status(500).json({ error: error });
+        });
+    }
   }
 });
 
