@@ -7,8 +7,8 @@ router.get("/", function(req, res, next) {
   res.render("index", { title: "Express" });
 });
 
-router.post("/login", passport.authenticate("local", {  successRedirect: "/users",
-                                                        failureRedirect: "/" })
-);
+router.post("/login", passport.authenticate("local"), function(req, res) {
+  res.redirect("/");
+});
 
 module.exports = router;

@@ -10,15 +10,21 @@ chai.use(chaiHttp);
 describe("Users", function() {
   describe("GET/users", function() {
     it("should get all the users", function(done) {
-      chai
-        .request(server)
-        .get("/users")
+      var user = {
+        username: "firstusername",
+        password: "firstuserpassword"
+      };
+
+      var agent = chai.request.agent(server);
+      agent
+        .post("/login")
+        .send(user)
         .end(function(err, res) {
-          console.log("error" + err);
-          console.log("res" + res);
-          console.log(res.body);
           res.should.have.status(200);
-          done();
+          return agent.get("/users").then(function(res) {
+            res.should.have.status(200);
+            done();
+          });
         });
     });
   });
