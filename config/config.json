@@ -12,5 +12,12 @@
     "database": "ridewithus",
     "host": "127.0.0.1",
     "dialect": "mysql"
+  },
+  "production": {
+    "username": "baffda096f8101",
+    "password": "dc15cbc0",
+    "database": "heroku_a54991b2a52174e",
+    "host": "us-cdbr-iron-east-03.cleardb.net",
+    "dialect": "mysql"
   }
 }
