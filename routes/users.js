@@ -2,7 +2,7 @@ var express = require("express");
 var router = express.Router();
 var db = require("../models/index");
 var bcrypt = require("bcrypt");
-var usersValidator = require("../libs/validators/user");
+var userValidator = require("../libs/validators/user");
 
 router.get("/", function(req, res, next) {
   if (req.user) {
@@ -27,7 +27,7 @@ router.post("/register", function(req, res) {
     req.session.success = true;
     var salt = bcrypt.genSaltSync(10);
     var encryptedPassword = bcrypt.hashSync(req.body.password, salt);
-    var validationResult = usersValidator.validateUserDetails(req.body);
+    var validationResult = userValidator.validateUserDetails(req.body);
 
     if (validationResult.error === null) {
       db.User.create({

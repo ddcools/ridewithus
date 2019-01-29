@@ -1,7 +1,7 @@
-'use strict';
+"use strict";
 module.exports = {
   up: (queryInterface, Sequelize) => {
-    return queryInterface.createTable('Bikes', {
+    return queryInterface.createTable("Bikes", {
       id: {
         allowNull: false,
         autoIncrement: true,
@@ -11,9 +11,12 @@ module.exports = {
       riderId: {
         type: Sequelize.UUID,
         references: {
-          model: 'Riders',
-          key: 'uuid',
+          model: "Riders",
+          key: "uuid"
         }
+      },
+      name: {
+        type: Sequelize.STRING
       },
       brand: {
         type: Sequelize.STRING
@@ -32,6 +35,6 @@ module.exports = {
     });
   },
   down: (queryInterface, Sequelize) => {
-    return queryInterface.dropTable('Bikes');
+    return queryInterface.dropTable("Bikes");
   }
 };
